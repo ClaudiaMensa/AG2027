@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Desafio Mensa Brasil - AG 2027</title>
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
         :root {
             --azul-marinho: #0b2545;
@@ -160,4 +159,118 @@
 
     <div class="container" id="quiz-container">
         <div class="progress-text" id="progress-info">Questão 1 de 4</div>
-        <div class
+        <div class="quiz-box">
+            <h3 id="question-title">Carregando...</h3>
+            <p id="question-text">Carregando...</p>
+        </div>
+
+        <div class="options-container" id="options-block"></div>
+
+        <button class="btn" onclick="checkAnswer()">Confirmar Resposta & Avançar</button>
+        
+        <div class="hint-toggle" onclick="toggleHint()">💡 Precisa de uma pista de alto QI?</div>
+        <div class="hint-container" id="hint-box"></div>
+        <div class="error-message" id="error-box">Resposta incorreta! O intelecto mensano exige um pouco mais de reflexão. Tente novamente!</div>
+    </div>
+
+    <div class="container reveal-box" id="reveal-container">
+        <h1>O Mistério Foi Revelado!</h1>
+        <h2>Preparem as malas para o Nordeste!</h2>
+        <p style="font-size: 16px; max-width: 500px; margin: 20px auto; line-height: 1.6;">
+            Parabéns! Suas deduções lógicas e conhecimentos geográficos desvendaram o segredo do próximo grande encontro da nossa comunidade.
+        </p>
+        <hr>
+        <h2>Anual Gathering (AG) 2027</h2>
+        <h3>PERNAMBUCO</h3>
+        <p style="font-size: 18px; font-weight: bold;">Recife | Olinda | Porto de Galinhas</p>
+        <p style="font-size: 14px; letter-spacing: 1px;">📅 26 a 30 de Maio de 2027</p>
+    </div>
+
+    <script>
+        const perguntas = [
+            {
+                titulo: "Enigma 1: O Patrimônio e os Gigantes",
+                texto: "Nossa primeira parada é em uma cidade que já foi capital e hoje é Patrimônio Histórico da Humanidade pela UNESCO. Suas ladeiras íngremes guardam uma das festas mais famosas do mundo, onde foliões de quatro metros de altura de papel-machê desfilam sem cansar. De qual cidade estamos falando?",
+                opcoes: ["Ouro Preto", "Olinda", "Salvador", "São Luís"],
+                correta: "Olinda",
+                dica: "O nome da cidade surgiu de uma suposta frase exclamada por seu fundador: 'Oh, linda situação para se fundar uma vila!'"
+            },
+            {
+                titulo: "Enigma 2: A Veneza Brasileira e as Pontes",
+                texto: "A segunda pista nos leva a uma metrópole cortada por rios, pontes e ilhas, apelidada de 'Veneza Brasileira'. É a capital literária que inspirou poetas como Manuel Bandeira e João Cabral de Melo Neto, e possui o parque tecnológico mais vibrante do país. Que cidade é esta?",
+                opcoes: ["Florianópolis", "Vitória", "Belém", "Recife"],
+                correta: "Recife",
+                dica: "O nome da cidade vem das barreiras de recifes de corais que protegem a sua costa."
+            },
+            {
+                titulo: "Enigma 3: As Piscinas Naturais e os Jangadeiros",
+                texto: "A terceira pista nos leva a um antigo vilarejo de pescadores, originalmente chamado de Porto do Soure. Suas piscinas naturais de águas mornas e transparentes, repletas de peixes coloridos, são acessadas por charmosas jangadas. Hoje, é um dos destinos de praia mais cobiçados do mundo. Onde estamos?",
+                opcoes: ["Porto de Galinhas", "Arraial do Cabo", "Jericoacoara", "Maragogi"],
+                correta: "Porto de Galinhas",
+                dica: "O nome atual surgiu no século XIX, quando pessoas escravizadas eram trazidas ilegalmente escondidas sob engradados de aves sob o código: 'Tem galinha nova no porto!'."
+            },
+            {
+                titulo: "Enigma Final: O Estado do Leão do Norte",
+                texto: "Juntando as ladeiras históricas, as pontes cosmopolitas e os recifes paradisíacos... Todos esses destinos pertencem a um estado que tem o frevo no coração, o maracatu nas veias e já foi uma república independente por 75 dias in 1817. Qual é o estado anfitrião?",
+                opcoes: ["Bahia", "Ceará", "Pernambuco", "Rio Grande do Norte"],
+                correta: "Pernambuco",
+                dica: "Sua bandeira azul e branca ostenta um arco-íris, o sol e uma cruz."
+            }
+        ];
+
+        let passoAtual = 0;
+
+        function carregarPergunta() {
+            if (passoAtual >= perguntas.length) {
+                mostrarRevelacao();
+                return;
+            }
+
+            const p = perguntas[passoAtual];
+            document.getElementById("progress-info").innerText = `Questão ${passoAtual + 1} de ${perguntas.length}`;
+            document.getElementById("question-title").innerText = p.titulo;
+            document.getElementById("question-text").innerText = p.texto;
+            document.getElementById("hint-box").innerText = p.dica;
+            document.getElementById("hint-box").style.display = "none";
+            document.getElementById("error-box").style.display = "none";
+
+            const optionsBlock = document.getElementById("options-block");
+            optionsBlock.innerHTML = "";
+
+            p.opcoes.forEach(opcao => {
+                const label = document.createElement("label");
+                label.className = "option-label";
+                label.innerHTML = `<input type="radio" name="quiz-opt" value="${opcao}"> ${opcao}`;
+                optionsBlock.appendChild(label);
+            });
+        }
+
+        function checkAnswer() {
+            const selecionado = document.querySelector('input[name="quiz-opt"]:checked');
+            if (!selecionado) {
+                alert("Por favor, selecione uma resposta.");
+                return;
+            }
+
+            if (selecionado.value === perguntas[passoAtual].correta) {
+                passoAtual++;
+                carregarPergunta();
+            } else {
+                document.getElementById("error-box").style.display = "block";
+            }
+        }
+
+        function toggleHint() {
+            const hb = document.getElementById("hint-box");
+            hb.style.display = hb.style.display === "block" ? "none" : "block";
+        }
+
+        function mostrarRevelacao() {
+            document.getElementById("quiz-container").style.display = "none";
+            document.getElementById("reveal-container").style.display = "block";
+        }
+
+        carregarPergunta();
+    </script>
+</body>
+</html>
