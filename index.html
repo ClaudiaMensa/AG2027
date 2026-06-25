@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Desafio Mensa Brasil - AG 2027</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        :root {
+            --azul-marinho: #0b2545;
+            --azul-medio: #134074;
+            --dourado: #c5a059;
+            --fundo: #f8f9fa;
+            --texto: #1a2a3a;
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            background-color: var(--fundo);
+            color: var(--texto);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            margin-top: 20px;
+            box-sizing: border-box;
+        }
+
+        .logo-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .logo-placeholder {
+            font-weight: bold;
+            color: var(--azul-marinho);
+            font-size: 24px;
+            letter-spacing: 1px;
+        }
+
+        h1, h2, h3, h4 {
+            color: var(--azul-marinho);
+            margin-top: 0;
+        }
+
+        .progress-text {
+            color: var(--dourado);
+            font-weight: bold;
+            font-size: 14px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        .quiz-box {
+            border-left: 5px solid var(--azul-medio);
+            padding-left: 15px;
+            margin-bottom: 25px;
+        }
+
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .option-label:hover {
+            background-color: #f1f3f5;
+            border-color: var(--azul-medio);
+        }
+
+        .option-label input {
+            margin-right: 12px;
+        }
+
+        .btn {
+            background-color: var(--azul-medio);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+            transition: background 0.2s;
+        }
+
+        .btn:hover {
+            background-color: var(--dourado);
+            color: var(--azul-marinho);
+        }
+
+        .hint-container {
+            margin-top: 15px;
+            background: #eef2f7;
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 14px;
+            display: none;
+        }
+
+        .hint-toggle {
+            color: var(--azul-medio);
+            cursor: pointer;
+            font-size: 14px;
+            text-decoration: underline;
+            margin-top: 10px;
+            display: inline-block;
+        }
+
+        .error-message {
+            color: #d9534f;
+            font-weight: bold;
+            margin-top: 15px;
+            display: none;
+            text-align: center;
+        }
+
+        /* Tela de Revelação */
+        .reveal-box {
+            display: none;
+            background-color: var(--azul-marinho);
+            color: white;
+            padding: 40px 20px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .reveal-box h1 { color: var(--dourado); }
+        .reveal-box h3 { color: var(--dourado); margin-top: 5px;}
+        .reveal-box hr { border-color: var(--dourado); width: 50%; margin: 20px auto; }
+    </style>
+</head>
+<body>
+
+    <div class="logo-container">
+        <div class="logo-placeholder">🧠 MENSA BRASIL</div>
+    </div>
+
+    <div class="container" id="quiz-container">
+        <div class="progress-text" id="progress-info">Questão 1 de 4</div>
+        <div class
